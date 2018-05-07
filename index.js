@@ -11,33 +11,26 @@
       func(resolve, rejectCaller, cancelCaller)
     })
 
-    pro.then = (oldThen =>
-      (resolveHandler, rejectHandler, cancelHandler) =>
-        new CancelablePromise((resolve, reject) =>
-          oldThen.call(pro, resolveHandler, err => {
-            if (err instanceof PromiseCancelError) {
-              if (cancelHandler) {
-                return cancelHandler(err)
-              }
-            }
-
-            return rejectHandler && rejectHandler(err)
-          }).then(resolve, reject)
-        )
+    pro.then = (oldThen => (resolveHandler, rejectHandler, cancelHandler) =>
+      new CancelablePromise((resolve, reject) =>
+        oldThen.call(pro, resolveHandler, err =>
+          err instanceof PromiseCancelError && cancelHandler ?
+            cancelHandler(err) :
+            rejectHandler && rejectHandler(err)
+        ).then(resolve, reject)
+      )
     )(pro.then)
 
-    pro.catch = (oldCatch =>
-      (rejectHandler) =>
-        new CancelablePromise((resolve, reject) =>
-          oldCatch.call(pro, rejectHandler).then(resolve, reject)
-        )
+    pro.catch = (oldCatch => rejectHandler =>
+      new CancelablePromise((resolve, reject) =>
+        oldCatch.call(pro, rejectHandler).then(resolve, reject)
+      )
     )(pro.catch)
 
-    pro.finally = (oldFinally =>
-      (finallyHandler) =>
-        new CancelablePromise((resolve, reject) =>
-          oldFinally.call(pro, oldFinally).then(resolve, reject)
-        )
+    pro.finally = (oldFinally => finallyHandler =>
+      new CancelablePromise((resolve, reject) =>
+        oldFinally.call(pro, oldFinally).then(resolve, reject)
+      )
     )(pro.finally)
 
     pro.cancel = cancelCaller
@@ -45,6 +38,7 @@
     return pro
   }
 
+  // init
   if (typeof window !== 'undefined') {
     window.CancelablePromise = CancelablePromise
     window.PromiseCancelError = PromiseCancelError
