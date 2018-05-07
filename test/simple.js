@@ -1,8 +1,3 @@
-# cancelable-promise
-
-一个可以取消的`Promise`，完美兼容普通`Promise`的使用
-
-```javascript
 const {CancelablePromise, PromiseCancelError} = require('../')
 
 function delay () {
@@ -32,4 +27,3 @@ async function main () {
 }
 
 main()
-```

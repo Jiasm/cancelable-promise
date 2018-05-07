@@ -1,0 +1,23 @@
+{
+  "name": "cancelable-promise",
+  "version": "0.0.1",
+  "description": "a cancelable promise supports",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jiasm/cancelable-promise.git"
+  },
+  "keywords": [
+    "javascript",
+    "promise"
+  ],
+  "author": "jiasm",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jiasm/cancelable-promise/issues"
+  },
+  "homepage": "https://github.com/Jiasm/cancelable-promise#readme"
+}
